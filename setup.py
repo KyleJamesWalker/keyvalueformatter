@@ -11,12 +11,13 @@ requirements = [
 test_requirements = [
     "nose",
     "mock",
+    "testfixtures",
 ]
 
 setup(
     name='keyvalueformatter',
     version='0.0.1',
-    description='Allows easy key/value formatting for standard python logging',
+    description='Allows easy key=value formatting for standard python logging',
     long_description=readme,
     author='Kyle James Walker',
     author_email='KyleJamesWalker@gmail.com',

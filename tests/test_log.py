@@ -45,4 +45,23 @@ class LogTestCase(unittest.TestCase):
         )
 
 if __name__ == '__main__':
-    unittest.main()
+    # I need to look into this, not sure why it's not working
+    # unittest.main()
+
+    # For now just run a single manual test...
+    logger = logging.getLogger('logging-test')
+    logger.setLevel(logging.DEBUG)
+    the_buffer = StringIO()
+
+    logHandler = logging.StreamHandler(the_buffer)
+
+    fr = keyvalueformatter.KeyValueFormatter(
+        '%(levelname)s %(levelno)s %(pathname)s %(funcName)s'
+        ' %(lineno)d %(exc_info)s %(message)s')
+    logHandler.setFormatter(fr)
+    logger.addHandler(logHandler)
+
+    logger.info("a message")
+    logger.info(dict(message="a message", fun=True))
+    log_value = the_buffer.getvalue()
+    print(log_value)
