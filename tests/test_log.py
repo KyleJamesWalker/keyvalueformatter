@@ -5,63 +5,67 @@ from __future__ import unicode_literals
 import logging
 import unittest
 
-import keyvalueformatter
-
-from testfixtures import log_capture
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    # Python 3 Support
-    from io import StringIO
+from keyvalueformatter import KeyValueFormatter
+from six.moves import cStringIO
 
 
 class LogTestCase(unittest.TestCase):
     def setUp(self):
         self.logger = logging.getLogger('logging-test')
         self.logger.setLevel(logging.DEBUG)
-        self.buffer = StringIO()
+        self.buffer = cStringIO()
 
         self.logHandler = logging.StreamHandler(self.buffer)
+        self.logHandler.setFormatter(KeyValueFormatter())
         self.logger.addHandler(self.logHandler)
 
     def test_default_format(self):
-        fr = keyvalueformatter.KeyValueFormatter()
-        self.logHandler.setFormatter(fr)
+        '''Make sure the logger can take a simple string
 
+        '''
         self.logger.info("a message")
-        log_value = self.buffer.getvalue()
+        self.assertEqual(self.buffer.getvalue(),
+                         ';message="a message"\n')
 
-        self.assetEqual(log_value, "msg='a message'")
+    def test_dict_format(self):
+        '''Make sure the logger can take a message within a dictionary
 
-    @log_capture()
-    def test_log(self, l):
-        self.logger.info('a message')
-        self.logger.error('an error')
+        '''
+        self.logger.info(dict(
+            message="a message"
+        ))
 
-        l.check(
-            ('root', 'INFO', "msg='a message'"),
-            ('root', 'ERROR', "msg='an error'"),
-        )
+        self.assertEqual(self.buffer.getvalue(),
+                         ';message="a message"\n')
+
+    def test_dict_with_fields(self):
+        '''Make sure the logger can handle complex types
+
+        '''
+        self.logger.info(dict(
+            message="a message",
+            field=True,
+            more="More goes here",
+            dict={'hello': 'world'},
+            list=['nice', 'time'],
+        ))
+
+        if "u'" in self.buffer.getvalue():
+            self.assertEqual(self.buffer.getvalue(),
+                            ''';dict="{u'hello': u'world'}"'''
+                            ''';field="True"'''
+                            ''';list="[u'nice', u'time']"'''
+                            ''';message="a message"'''
+                            ''';more="More goes here"'''
+                            '''\n''')
+        else:
+            self.assertEqual(self.buffer.getvalue(),
+                            ''';dict="{'hello': 'world'}"'''
+                            ''';field="True"'''
+                            ''';list="['nice', 'time']"'''
+                            ''';message="a message"'''
+                            ''';more="More goes here"'''
+                            '''\n''')
 
 if __name__ == '__main__':
-    # I need to look into this, not sure why it's not working
-    # unittest.main()
-
-    # For now just run a single manual test...
-    logger = logging.getLogger('logging-test')
-    logger.setLevel(logging.DEBUG)
-    the_buffer = StringIO()
-
-    logHandler = logging.StreamHandler(the_buffer)
-
-    fr = keyvalueformatter.KeyValueFormatter(
-        '%(levelname)s %(levelno)s %(pathname)s %(funcName)s'
-        ' %(lineno)d %(exc_info)s %(message)s')
-    logHandler.setFormatter(fr)
-    logger.addHandler(logHandler)
-
-    logger.info("a message")
-    logger.info(dict(message="a message", fun=True))
-    log_value = the_buffer.getvalue()
-    print(log_value)
+    unittest.main()
