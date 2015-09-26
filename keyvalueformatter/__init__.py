@@ -4,10 +4,15 @@ to output log data as key/value formatted strings.
 
 Based on: https://github.com/madzak/python-json-logger
 '''
+# -*- coding: utf-8 -*-
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import logging
 import re
 import traceback
 
+from six import iteritems
 
 # Support order in python 2.7 and 3
 try:
@@ -21,7 +26,8 @@ RESERVED_ATTRS = (
     'args', 'asctime', 'created', 'exc_info', 'exc_text', 'filename',
     'funcName', 'levelname', 'levelno', 'lineno', 'module',
     'msecs', 'message', 'msg', 'name', 'pathname', 'process',
-    'processName', 'relativeCreated', 'thread', 'threadName')
+    'processName', 'relativeCreated', 'thread', 'threadName',
+    'stack_info', 'extra')
 
 RESERVED_ATTR_HASH = dict(zip(RESERVED_ATTRS, RESERVED_ATTRS))
 
@@ -115,7 +121,9 @@ class KeyValueFormatter(logging.Formatter):
         log_record = self.process_log_record(log_record)
 
         response = [self.prefix]
-        for key, value in log_record.iteritems():
+
+        sorted_entries = sorted([(k, v) for k, v in iteritems(log_record)])
+        for key, value in sorted_entries:
             if key == 'exc_info' and value and len(value) is 3:
                 exc_type = self.kv_repr(value[0], response)
                 exc_line = self.kv_repr(value[1], response)

@@ -6,6 +6,7 @@ except ImportError:
 readme = open('README.rst').read()
 
 requirements = [
+    "six",
 ]
 
 test_requirements = [
@@ -16,7 +17,7 @@ test_requirements = [
 
 setup(
     name='keyvalueformatter',
-    version='0.0.1',
+    version='0.0.2',
     description='Allows easy key=value formatting for standard python logging',
     long_description=readme,
     author='Kyle James Walker',
@@ -34,7 +35,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
     ],
     test_suite='tests',
     tests_require=test_requirements
