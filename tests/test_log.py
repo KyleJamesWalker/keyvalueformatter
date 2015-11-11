@@ -25,7 +25,7 @@ class LogTestCase(unittest.TestCase):
         '''
         self.logger.info("a message")
         self.assertEqual(self.buffer.getvalue(),
-                         ';message="a message"\n')
+                         'message="a message"\n')
 
     def test_dict_format(self):
         '''Make sure the logger can take a message within a dictionary
@@ -36,7 +36,7 @@ class LogTestCase(unittest.TestCase):
         ))
 
         self.assertEqual(self.buffer.getvalue(),
-                         ';message="a message"\n')
+                         'message="a message"\n')
 
     def test_dict_with_fields(self):
         '''Make sure the logger can handle complex types
@@ -52,20 +52,20 @@ class LogTestCase(unittest.TestCase):
 
         if "u'" in self.buffer.getvalue():
             self.assertEqual(self.buffer.getvalue(),
-                            ''';dict="{u'hello': u'world'}"'''
-                            ''';field="True"'''
-                            ''';list="[u'nice', u'time']"'''
-                            ''';message="a message"'''
-                            ''';more="More goes here"'''
-                            '''\n''')
+                             '''dict="{u'hello': u'world'}"'''
+                             ''';field="True"'''
+                             ''';list="[u'nice', u'time']"'''
+                             ''';message="a message"'''
+                             ''';more="More goes here"'''
+                             '''\n''')
         else:
             self.assertEqual(self.buffer.getvalue(),
-                            ''';dict="{'hello': 'world'}"'''
-                            ''';field="True"'''
-                            ''';list="['nice', 'time']"'''
-                            ''';message="a message"'''
-                            ''';more="More goes here"'''
-                            '''\n''')
+                             '''dict="{'hello': 'world'}"'''
+                             ''';field="True"'''
+                             ''';list="['nice', 'time']"'''
+                             ''';message="a message"'''
+                             ''';more="More goes here"'''
+                             '''\n''')
 
 if __name__ == '__main__':
     unittest.main()

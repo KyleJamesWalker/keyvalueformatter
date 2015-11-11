@@ -17,7 +17,7 @@ test_requirements = [
 
 setup(
     name='keyvalueformatter',
-    version='0.0.2',
+    version='0.0.3',
     description='Allows easy key=value formatting for standard python logging',
     long_description=readme,
     author='Kyle James Walker',
