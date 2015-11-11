@@ -119,7 +119,7 @@ class KeyValueFormatter(logging.Formatter):
 
         self.add_fields(log_record, record, message_dict)
         log_record = self.process_log_record(log_record)
-        
+
         response = [self.prefix] if self.prefix else []
 
         sorted_entries = sorted([(k, v) for k, v in iteritems(log_record)])
