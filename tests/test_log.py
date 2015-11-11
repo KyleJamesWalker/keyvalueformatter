@@ -52,20 +52,20 @@ class LogTestCase(unittest.TestCase):
 
         if "u'" in self.buffer.getvalue():
             self.assertEqual(self.buffer.getvalue(),
-                            '''dict="{u'hello': u'world'}"'''
-                            ''';=field="True"'''
-                            ''';list="[u'nice', u'time']"'''
-                            ''';message="a message"'''
-                            ''';more="More goes here"'''
-                            '''\n''')
+                             '''dict="{u'hello': u'world'}"'''
+                             ''';field="True"'''
+                             ''';list="[u'nice', u'time']"'''
+                             ''';message="a message"'''
+                             ''';more="More goes here"'''
+                             '''\n''')
         else:
             self.assertEqual(self.buffer.getvalue(),
-                            '''dict="{'hello': 'world'}"'''
-                            ''';field="True"'''
-                            ''';list="['nice', 'time']"'''
-                            ''';message="a message"'''
-                            ''';more="More goes here"'''
-                            '''\n''')
+                             '''dict="{'hello': 'world'}"'''
+                             ''';field="True"'''
+                             ''';list="['nice', 'time']"'''
+                             ''';message="a message"'''
+                             ''';more="More goes here"'''
+                             '''\n''')
 
 if __name__ == '__main__':
     unittest.main()
