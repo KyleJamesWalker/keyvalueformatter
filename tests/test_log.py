@@ -25,7 +25,7 @@ class LogTestCase(unittest.TestCase):
         '''
         self.logger.info("a message")
         self.assertEqual(self.buffer.getvalue(),
-                         ';message="a message"\n')
+                         'message="a message"\n')
 
     def test_dict_format(self):
         '''Make sure the logger can take a message within a dictionary
@@ -36,7 +36,7 @@ class LogTestCase(unittest.TestCase):
         ))
 
         self.assertEqual(self.buffer.getvalue(),
-                         ';message="a message"\n')
+                         'message="a message"\n')
 
     def test_dict_with_fields(self):
         '''Make sure the logger can handle complex types
